@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">NewsApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="usa">Usa</string>
+    <string name="argentina">Argentina</string>
+    <string name="austria">Austria</string>
+    <string name="china">Chiane</string>
+    <string name="colombia">Colombia</string>
+    <string name="czech">Czech Republic</string>
+    <string name="germany">Germany</string>
+    <string name="egypt">Egypt</string>
+    <string name="france">France</string>
+    <string name="great_britain">Great Britain</string>
+    <string name="greece">Greece</string>
+    <string name="hong_kong">Hong Kong</string>
+    <string name="hungary">Hungary</string>
+    <string name="indonesia">Indonesia</string>
+    <string name="all_news">All News</string>
+    <string name="business">Business</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="general">General</string>
+    <string name="health">Health</string>
+    <string name="science">Science</string>
+    <string name="sports">Sports</string>
+    <string name="technology">Technology</string>
+    <string name="cuba">Cuba</string>
+    <string name="ok">Ok</string>
+    <string name="category_title">Select Category</string>
+    <string name="country_title">Select Country</string>
+</resources>
