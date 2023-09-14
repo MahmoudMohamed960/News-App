@@ -5,4 +5,5 @@ data class NewsUseCases(
     val getFilterList: GetFilterList,
     val filterNews: FilterNews,
     val getFilterSelectedItems: GetFilterSelectedItems,
+    val searchNews: SearchNews
 )

@@ -6,7 +6,6 @@ object Constants {
 
     const val ARTICLES_PER_PAGE = 10
     const val NEWS_STARTING_PAGE_INDEX = 1
-    const val CURRENT_PAGE_LOADED = "CURRENT_PAGE_LOADED"
     const val SELECTED_CATEGORY = "SELECTED_CATEGORY"
     const val SELECTED_COUNTRY = "SELECTED_COUNTRY"
 }

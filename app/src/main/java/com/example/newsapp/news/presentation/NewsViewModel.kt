@@ -4,20 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.newsapp.core.remote.retrofit.Response
-import com.example.newsapp.core.remote.retrofit.Status
 import com.example.newsapp.news.data.local.model.Articles
-import com.example.newsapp.news.data.remote.model.NewsResponse
-import com.example.newsapp.news.domain.model.FilterModel
 import com.example.newsapp.news.domain.use_case.NewsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,18 +26,29 @@ class NewsViewModel @Inject constructor(private val newsUseCases: NewsUseCases) 
 
     fun getFilterData() = newsUseCases.getFilterList()
 
-    private val _filterDataChanged = MutableLiveData<String>()
-    val filterDataChanged: LiveData<String> = _filterDataChanged
+    private val _headerTitle = MutableLiveData<String?>()
+    val headerTitle: LiveData<String?> = _headerTitle
 
-    fun changeFilterData(country: String, category: String) {
+
+    private val _filterDataChanged = MutableLiveData<Boolean?>()
+    val filterDataChanged: LiveData<Boolean?> = _filterDataChanged
+
+    fun changeHeaderTitle(title: String) {
+        _headerTitle.value = title
+    }
+
+    fun changeFilterData(country: String, category: String?) {
         newsUseCases.filterNews(
             country = country,
             category = category
         )
-        _filterDataChanged.value = category.toString()
+        _filterDataChanged.value = true
+        _headerTitle.value = category
     }
 
     fun getFilterSelectedItems() = newsUseCases.getFilterSelectedItems()
 
+    fun searchNews(query: String) =
+        newsUseCases.searchNews(query).cachedIn(viewModelScope).flowOn(Dispatchers.IO)
 
 }

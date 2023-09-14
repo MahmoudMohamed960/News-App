@@ -1,6 +1,5 @@
 package com.example.newsapp.news.presentation.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
@@ -18,7 +17,7 @@ class FilterAdapter(
     private val context: Context,
     val onClickItem: (Int, Int) -> Unit
 ) : ListAdapter<FilterModel, FilterAdapter.ViewHolder>(FilterListDiffCallback()) {
-    lateinit var filterItemLayoutBinding: FilterItemLayoutBinding
+    private lateinit var filterItemLayoutBinding: FilterItemLayoutBinding
     var currentCountryindex = -1
     var previousCountryIndex = -1
     var currentCategoryIndex = -1
@@ -53,7 +52,7 @@ class FilterAdapter(
     }
 
 
-    inner class ViewHolder(val binding: FilterItemLayoutBinding) :
+    inner class ViewHolder(private val binding: FilterItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindData(filterItem: FilterModel, position: Int) {
             binding.type.text = filterItem.name
@@ -92,6 +91,7 @@ class FilterAdapter(
                     )
                 )
                 binding.type.typeface = Typeface.DEFAULT_BOLD
+                binding.tickIcon.visibility = View.GONE
             } else {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(

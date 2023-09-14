@@ -14,6 +14,7 @@ import com.example.newsapp.news.domain.use_case.GetFilterSelectedItems
 import com.example.newsapp.news.domain.use_case.GetNews
 import com.example.newsapp.news.domain.use_case.NewsUseCases
 import com.example.newsapp.news.domain.use_case.FilterNews
+import com.example.newsapp.news.domain.use_case.SearchNews
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,9 +74,10 @@ object AppModule {
     fun provideNoteUseCases(repository: NewsRepoImpl): NewsUseCases {
         return NewsUseCases(
             getNews = GetNews(repository),
-            filterNews=FilterNews(repository),
-            getFilterList=GetFilterList(repository),
-            getFilterSelectedItems = GetFilterSelectedItems(repository)
+            filterNews = FilterNews(repository),
+            getFilterList = GetFilterList(repository),
+            getFilterSelectedItems = GetFilterSelectedItems(repository),
+            searchNews = SearchNews(repository)
         )
     }
 }

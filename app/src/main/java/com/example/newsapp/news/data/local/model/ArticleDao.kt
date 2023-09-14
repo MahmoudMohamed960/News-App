@@ -10,7 +10,7 @@ interface ArticleDao {
     @Query("SELECT * FROM articles")
     fun getArticles(): PagingSource<Int, Articles>
 
-    @Insert()
+    @Insert
     suspend fun insertArticles(article: List<Articles>)
 
     @Query("DELETE  FROM articles")

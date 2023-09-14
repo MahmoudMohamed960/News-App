@@ -9,7 +9,7 @@ import com.example.newsapp.news.data.local.model.RemoteKeysDao
 
 @Database(
     entities = [Articles::class,RemoteKeys::class],
-    version = 5
+    version = 6
 )
 abstract class ArticlesDataBase : RoomDatabase() {
     abstract val articleDao: ArticleDao

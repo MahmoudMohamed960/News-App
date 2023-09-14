@@ -51,36 +51,36 @@ class NewsRepoImpl @Inject constructor(
         FilterModel(
             "category",
             context.resources.getString(R.string.all_news),
-            ""
+            null
         ),
         FilterModel(
             "category",
             context.resources.getString(R.string.business),
-            "business"
+            "Business"
         ), FilterModel(
-            "category",
+            "Category",
             context.resources.getString(R.string.entertainment),
-            "entertainment"
+            "Entertainment"
         ), FilterModel(
             "category",
             context.resources.getString(R.string.general),
-            "general"
+            "General"
         ), FilterModel(
             "category",
             context.resources.getString(R.string.health),
-            "health"
+            "Health"
         ), FilterModel(
             "category",
             context.resources.getString(R.string.sports),
-            "sports"
+            "Sports"
         ), FilterModel(
             "category",
             context.resources.getString(R.string.science),
-            "science"
+            "Science"
         ), FilterModel(
             "category",
             context.resources.getString(R.string.technology),
-            "technology"
+            "Technology"
         ), FilterModel(
             "country",
             context.resources.getString(R.string.country_title),
@@ -149,8 +149,18 @@ class NewsRepoImpl @Inject constructor(
         )
     )
 
+    override fun searchNews(query: String): Flow<PagingData<Articles>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = ARTICLES_PER_PAGE,
+                initialLoadSize = ARTICLES_PER_PAGE
+            ),
+            pagingSourceFactory = { NewsPagingSource(newsService, query) }
+        ).flow
+    }
 
-    override  fun filterNews(filterSelectedData: FilterSelectedData) {
+
+    override fun filterNews(filterSelectedData: FilterSelectedData) {
         sharedPrefManager.saveSelectedCountry(filterSelectedData.country)
         sharedPrefManager.saveSelectedCategory(filterSelectedData.category)
     }

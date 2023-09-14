@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_above="@+id/button"
+        android:layout_above="@+id/ok_button"
         tools:listitem="@layout/filter_item_layout" />
 
     <Button

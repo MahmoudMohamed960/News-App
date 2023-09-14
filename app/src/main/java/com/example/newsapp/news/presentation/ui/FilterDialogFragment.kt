@@ -1,6 +1,5 @@
 package com.example.newsapp.news.presentation.ui
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,19 +13,18 @@ import com.example.newsapp.news.domain.model.FilterModel
 import com.example.newsapp.news.domain.model.FilterSelectedData
 import com.example.newsapp.news.presentation.NewsViewModel
 
-class FilterDialogeFragment : DialogFragment() {
-    lateinit var viewModel: NewsViewModel
-    lateinit var filterDialogeFragmentBinding: FilterDialogeFragmentBinding
-    lateinit var filterList: MutableList<FilterModel>
-    lateinit var filterSelectedData: FilterSelectedData
-    lateinit var adapter: FilterAdapter
+class FilterDialogFragment : DialogFragment() {
+    private lateinit var viewModel: NewsViewModel
+    private lateinit var filterDialogFragmentBinding: FilterDialogeFragmentBinding
+    private lateinit var filterList: MutableList<FilterModel>
+    private lateinit var filterSelectedData: FilterSelectedData
+    private lateinit var adapter: FilterAdapter
     var country = ""
-    var category = ""
+    private var category: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.CustomDialogTheme)
-
     }
 
     override fun onCreateView(
@@ -34,8 +32,8 @@ class FilterDialogeFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        filterDialogeFragmentBinding = FilterDialogeFragmentBinding.inflate(layoutInflater)
-        return filterDialogeFragmentBinding.root
+        filterDialogFragmentBinding = FilterDialogeFragmentBinding.inflate(layoutInflater)
+        return filterDialogFragmentBinding.root
     }
 
 
@@ -49,7 +47,8 @@ class FilterDialogeFragment : DialogFragment() {
             if (filterModel.value == filterSelectedData.country) {
                 filterModel.isSelected = true
                 country = filterSelectedData.country
-            } else if (filterModel.value == filterSelectedData.category) {
+            } else
+                if (filterModel.value == filterSelectedData.category) {
                 filterModel.isSelected = true
                 category = filterSelectedData.category
             }
@@ -81,13 +80,13 @@ class FilterDialogeFragment : DialogFragment() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        filterDialogeFragmentBinding.filterList.layoutManager = layoutManager
-        filterDialogeFragmentBinding.filterList.setHasFixedSize(true)
-        filterDialogeFragmentBinding.filterList.adapter = adapter
+        filterDialogFragmentBinding.filterList.layoutManager = layoutManager
+        filterDialogFragmentBinding.filterList.setHasFixedSize(true)
+        filterDialogFragmentBinding.filterList.adapter = adapter
 
         adapter.submitList(filterList)
 
-        filterDialogeFragmentBinding.okButton.setOnClickListener {
+        filterDialogFragmentBinding.okButton.setOnClickListener {
             viewModel.changeFilterData(country, category)
             dismiss()
         }

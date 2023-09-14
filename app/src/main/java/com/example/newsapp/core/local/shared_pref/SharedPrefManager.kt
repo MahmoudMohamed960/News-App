@@ -17,10 +17,10 @@ class SharedPrefManager @Inject constructor(@ApplicationContext context: Context
 
     fun getSelectedCountry() = sharedPreferences.getString(Constants.SELECTED_COUNTRY, "us") ?: "us"
 
-    fun saveSelectedCategory(value: String) {
+    fun saveSelectedCategory(value: String?) {
         sharedPreferences.edit().putString(Constants.SELECTED_CATEGORY, value).apply()
     }
 
-    fun getSelectedCategory() = sharedPreferences.getString(Constants.SELECTED_CATEGORY, "") ?: ""
+    fun getSelectedCategory() = sharedPreferences.getString(Constants.SELECTED_CATEGORY, null)
 
 }

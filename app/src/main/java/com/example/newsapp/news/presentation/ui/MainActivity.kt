@@ -1,18 +1,10 @@
 package com.example.newsapp.news.presentation.ui
 
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.newsapp.R
-import com.example.newsapp.core.remote.retrofit.Status
 import com.example.newsapp.databinding.ActivityMainBinding
 import com.example.newsapp.news.presentation.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,10 +35,10 @@ class MainActivity : AppCompatActivity() {
             transaction.commit()
         }
 
-//        viewModel.filterDataChanged.observe(this, Observer {
-//            if (it)
-//                adapter.refresh()
-//        }).
+        viewModel.headerTitle.observe(this) { title ->
+
+            mainBinding.headerLayout.title.text = title ?: resources.getString(R.string.all_news)
+        }
 
         mainBinding.headerLayout.backButton.setOnClickListener {
             supportFragmentManager.popBackStack()
@@ -55,9 +47,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainBinding.headerLayout.filterButton.setOnClickListener {
-            val filterDialogeFragment = FilterDialogeFragment()
-            filterDialogeFragment.show(supportFragmentManager, "filter dialoge")
+            val filterDialogFragment = FilterDialogFragment()
+            filterDialogFragment.show(supportFragmentManager, "filter dialog")
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mainBinding.headerLayout.title.text = resources.getString(R.string.all_news)
     }
 
     override fun onBackPressed() {

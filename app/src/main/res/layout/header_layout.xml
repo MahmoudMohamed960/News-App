@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:background="#02AC9E">
+    android:padding="10dp"
+    android:background="@color/primary_color">
 
     <ImageView
         android:id="@+id/back_button"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:visibility="gone"
         android:layout_margin="5dp"
         android:src="@drawable/back_icon"
@@ -28,6 +28,7 @@
         android:layout_marginStart="5dp"
         android:ellipsize="end"
         android:gravity="center"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/filter_button"
         app:layout_constraintStart_toEndOf="@+id/back_button"
@@ -36,8 +37,8 @@
 
     <ImageView
         android:id="@+id/filter_button"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_margin="5dp"
         android:src="@drawable/filter_icon"
         app:layout_constraintBottom_toBottomOf="parent"

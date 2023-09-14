@@ -14,12 +14,11 @@ import com.example.newsapp.news.data.local.model.RemoteKeys
 import com.example.newsapp.news.data.remote.NewsService
 import com.example.newsapp.util.Constants.ARTICLES_PER_PAGE
 import com.example.newsapp.util.Constants.NEWS_STARTING_PAGE_INDEX
-import kotlinx.coroutines.delay
 import java.lang.Exception
 import java.net.SocketTimeoutException
 import java.util.ArrayList
 import javax.inject.Inject
-import kotlin.random.Random
+import kotlin.math.ceil
 
 @OptIn(ExperimentalPagingApi::class)
 class NewsRemoteMediator @Inject constructor(
@@ -27,6 +26,7 @@ class NewsRemoteMediator @Inject constructor(
     private val sharedPrefManager: SharedPrefManager,
     private val newsService: NewsService
 ) : RemoteMediator<Int, Articles>() {
+    private var numberOfPages = 0
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Articles>
@@ -34,7 +34,7 @@ class NewsRemoteMediator @Inject constructor(
         return try {
             val page = when (loadType) {
                 LoadType.REFRESH -> {
-                 NEWS_STARTING_PAGE_INDEX
+                    NEWS_STARTING_PAGE_INDEX
                 }
 
                 LoadType.PREPEND -> {
@@ -55,19 +55,28 @@ class NewsRemoteMediator @Inject constructor(
 
 
             }
-            Log.d("PAGE_NUMBER",page.toString())
-            Log.d("PAGE_FILTER",sharedPrefManager.getSelectedCountry()+" "+sharedPrefManager.getSelectedCategory())
-            //get data remotely
+            Log.d("PAGE_NUMBER", page.toString())
+            Log.d(
+                "PAGE_FILTER",
+                sharedPrefManager.getSelectedCountry() + " " + sharedPrefManager.getSelectedCategory()
+            )
+
+
             val response = newsService.getNews(
                 page,
                 ARTICLES_PER_PAGE,
                 sharedPrefManager.getSelectedCountry(),
-                sharedPrefManager.getSelectedCategory()
+                sharedPrefManager.getSelectedCategory(),
+                null
             )
             if (response.status == "ok") {
-                Log.d("PAGE_TOTAL_RESULT",response.totalResults.toString())
+                numberOfPages = ceil((response.totalResults / ARTICLES_PER_PAGE).toDouble()).toInt()
+                if (numberOfPages == 0)
+                    numberOfPages += 1
+
+                Log.d("PAGE_TOTAL_RESULT", response.totalResults.toString())
                 val articles = response.articles
-                Log.d("PAGE_LOADED_SIZE",response.articles.size.toString())
+                Log.d("PAGE_LOADED_SIZE", response.articles.size.toString())
                 val endOfPaginationReached = articles.isEmpty()
 
                 val prevKey = if (page == NEWS_STARTING_PAGE_INDEX) null else page - 1
@@ -132,9 +141,11 @@ class NewsRemoteMediator @Inject constructor(
                 }
 
                 else -> {
-                    MediatorResult.Error(  Exception(
-                        "SERVER_ERROR"
-                    ))
+                    MediatorResult.Error(
+                        Exception(
+                            "SERVER_ERROR"
+                        )
+                    )
                 }
             }
         }

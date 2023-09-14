@@ -11,4 +11,5 @@ interface NewsRepo {
     fun filterNews(filterSelectedData: FilterSelectedData)
     fun getFilterSelectedItems(): FilterSelectedData
     fun getFilterList(): List<FilterModel>
+    fun searchNews(query:String): Flow<PagingData<Articles>>
 }
