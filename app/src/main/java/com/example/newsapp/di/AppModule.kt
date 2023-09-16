@@ -2,6 +2,7 @@ package com.example.newsapp.di
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.newsapp.core.local.room.ArticlesDataBase
 import com.example.newsapp.core.local.shared_pref.SharedPrefManager
@@ -15,6 +16,7 @@ import com.example.newsapp.news.domain.use_case.GetNews
 import com.example.newsapp.news.domain.use_case.NewsUseCases
 import com.example.newsapp.news.domain.use_case.FilterNews
 import com.example.newsapp.news.domain.use_case.SearchNews
+import com.example.newsapp.util.Constants.NEWS_PREFERENCES
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,9 +40,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNewsDatabase(app: Application): ArticlesDataBase {
+    fun provideNewsDatabase(@ApplicationContext context: Context): ArticlesDataBase {
         return Room.databaseBuilder(
-            app,
+            context,
             ArticlesDataBase::class.java,
             ArticlesDataBase.DATABASE_NAME
         ).fallbackToDestructiveMigration()
@@ -54,8 +56,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSharedPref(@ApplicationContext context: Context) =
-        SharedPrefManager(context)
+    fun provideSharedPreferences(@ApplicationContext context: Context)=
+        context.getSharedPreferences(NEWS_PREFERENCES, Context.MODE_PRIVATE)
+
+    @Provides
+    @Singleton
+    fun provideSharedPref(sharedPreferences: SharedPreferences) =
+        SharedPrefManager(sharedPreferences)
 
 
     @Provides

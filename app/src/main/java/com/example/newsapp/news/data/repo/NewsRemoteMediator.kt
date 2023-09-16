@@ -1,6 +1,5 @@
 package com.example.newsapp.news.data.repo
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -55,12 +54,6 @@ class NewsRemoteMediator @Inject constructor(
 
 
             }
-            Log.d("PAGE_NUMBER", page.toString())
-            Log.d(
-                "PAGE_FILTER",
-                sharedPrefManager.getSelectedCountry() + " " + sharedPrefManager.getSelectedCategory()
-            )
-
 
             val response = newsService.getNews(
                 page,
@@ -73,12 +66,8 @@ class NewsRemoteMediator @Inject constructor(
                 numberOfPages = ceil((response.totalResults / ARTICLES_PER_PAGE).toDouble()).toInt()
                 if (numberOfPages == 0)
                     numberOfPages += 1
-
-                Log.d("PAGE_TOTAL_RESULT", response.totalResults.toString())
                 val articles = response.articles
-                Log.d("PAGE_LOADED_SIZE", response.articles.size.toString())
                 val endOfPaginationReached = articles.isEmpty()
-
                 val prevKey = if (page == NEWS_STARTING_PAGE_INDEX) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 val remoteKeys = ArrayList<RemoteKeys>()
@@ -106,6 +95,7 @@ class NewsRemoteMediator @Inject constructor(
                     )
                 }
 
+
                 articlesDataBase.withTransaction {
                     // save data locally
                     if (loadType == LoadType.REFRESH) {
@@ -121,7 +111,6 @@ class NewsRemoteMediator @Inject constructor(
                     endOfPaginationReached = endOfPaginationReached
                 )
             } else {
-                Log.d("SERVER_ERROR", response.message.toString())
                 MediatorResult.Error(
                     Exception(
                         "SERVER_ERROR"

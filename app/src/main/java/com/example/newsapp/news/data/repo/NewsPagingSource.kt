@@ -16,13 +16,13 @@ class NewsPagingSource(private val newsService: NewsService, private val query: 
     PagingSource<Int, Articles>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Articles> {
         val currentPage = params.key ?: NEWS_STARTING_PAGE_INDEX
-
+        try {
         val response = newsService.getNews(
             page = currentPage,
             pageSize = ARTICLES_PER_PAGE,
             query = query
         )
-        try {
+
             val articlesList = ArrayList<Articles>()
             response.articles.map { article ->
                 articlesList.add(
